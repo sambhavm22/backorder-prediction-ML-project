@@ -8,5 +8,6 @@ pyarrow
 dill
 imbalanced-learn
 flask
+PyYAML
 
 #-e .

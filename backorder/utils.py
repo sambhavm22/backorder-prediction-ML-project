@@ -2,8 +2,27 @@ import os, sys
 from backorder.exception import CustomException
 import numpy as np
 import dill
-
+import yaml
 from sklearn.metrics import accuracy_score
+import pandas as pd
+
+def convert_columns_float(df:pd.DataFrame,exclude_columns:list)->pd.DataFrame:
+    try:
+        for column in df.columns:
+            if column not in exclude_columns:
+                if df[column].dtypes != 'O':
+                    df[column]=df[column].astype('float')
+        return df
+    except Exception as e:
+        raise CustomException(e, sys)
+    
+def write_yaml_file(file_path,data:dict):
+    try:
+        os.makedirs(os.path.dirname(file_path),exist_ok=True)
+        with open(file_path,"w") as file_writer:
+            yaml.dump(data,file_writer)
+    except Exception as e:
+        raise CustomException(e, sys)    
 
 def save_object(file_path, obj):
     try:
@@ -42,13 +61,13 @@ def evaluate_model(X_train, X_test, y_train, y_test, models):
         raise Exception(e, sys)
 
 
-# def load_object(file):
-#     try:
-#         with open(file, 'rb') as file_object:
-#             model = dill.load(file_object)
-#             return model
+def load_object(file):
+    try:
+        with open(file, 'rb') as file_object:
+            model = dill.load(file_object)
+            return model
 
-#     except Exception as e:
-#         raise Exception(e, sys)
+    except Exception as e:
+        raise Exception(e, sys)
 
     

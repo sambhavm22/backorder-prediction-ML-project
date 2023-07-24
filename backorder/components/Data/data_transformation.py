@@ -19,34 +19,10 @@ from backorder.utils import save_array, save_object
 from backorder.entity.config_entity import DataTransformationConfig
 
 
-threshold = 0.6
-
 
 class DataTransformation:
     def __init__(self):
         self.data_transformation_config = DataTransformationConfig()
-
-
-    def remove_columns_with_high_missing_values(self,df):
-
-        try: 
-            logging.info("removing column if the missing values cross a given threshold")
-            total_rows = len(df) #display total no of rows
-            columns_to_remove = []
-
-            for column in df.columns:
-                missing_values_count = df[column].isnull().sum()
-                missing_values_percentage = (missing_values_count / total_rows)
-                if missing_values_percentage > threshold:
-                    columns_to_remove.append(column)
-            
-            if columns_to_remove:
-                df = df.drop(columns=columns_to_remove)
-            logging.info("remove_columns_with_high_missing_values is completed")
-            return df
-        
-        except Exception as e:
-            raise CustomException(e, sys)
 
     def get_data_transformed(self):
         try:
@@ -87,6 +63,7 @@ class DataTransformation:
         
     def initiate_data_transformation(self, train_path, test_path):
         try:
+
             logging.info("reading train and test data")
             train_df = pd.read_csv(train_path)
             test_df = pd.read_csv(test_path)

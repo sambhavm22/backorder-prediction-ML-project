@@ -19,8 +19,8 @@ class DataIngestion:
             logging.info("read data as data frame")
             df = pd.read_csv("notebook/data/backorder_dataset.csv", low_memory=False)
             os.makedirs(os.path.dirname(self.data_ingestion_config.raw_data_path), exist_ok=True)
-            df.to_csv(self.data_ingestion_config.raw_data_path, header=True, index=False)
-            
+            df.sample(2000).to_csv(self.data_ingestion_config.raw_data_path, header=True, index=False)
+
             logging.info("removing sku column")
             df = df.drop(columns=['sku'], axis=1)
 
